@@ -318,7 +318,7 @@ def load_df_to_bq(df, project_id):
     print(f"Loaded {job.output_rows} rows into {table_id}.")
 
 
-def main():
+def vrcg_pipeline():
     storage_client = storage.Client()
 
     bucket = storage_client.get_bucket(cfg.bucket)
@@ -367,4 +367,4 @@ def main():
         print("No unread emails.")
 
 if __name__ == '__main__':
-    main()
+    vrcg_pipeline()
