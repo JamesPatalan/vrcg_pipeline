@@ -359,7 +359,7 @@ def main():
         print('pushing to bq')
         load_df_to_bq(
             all_data,
-            project_id='vrcg-database'
+            project_id='cfg.project'
         )
         print('done')
 
