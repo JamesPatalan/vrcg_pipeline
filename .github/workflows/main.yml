@@ -75,14 +75,28 @@ jobs:
         with:
           version: 'latest'
 
+
+          
       - name: Deploy
-        run: |
-          gcloud builds submit --pack image=gcr.io/vrcg-database/vrcg_pipeline:$GITHUB_SHA ./vrcg_pipeline
-          gcloud run deploy vrcg_pipeline \
-            --image gcr.io/vrcg-database/vrcg_pipeline:$GITHUB_SHA \
-            --platform managed \
-            --region us-central1 \
-            --timeout 540 \
-            --memory 1024Mi \
-            --update-labels managed-by=github-actions,commit-sha=$GITHUB_SHA \
-            --project vrcg-database
+        uses: google-github-actions/deploy-cloud-functions@v2
+        with: 
+          name: vrcg_pipeline
+          runtime: python38
+          project_id: vrcg-database
+          event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
+          event_trigger_resource: projects/vrcg-database/topics/vrcg-pipeline-trigger
+          source_dir: ./vrcg_pipeline/
+          timeout: 540
+          memory_mb: 1024
+        
+        
+#        run: |
+#          gcloud builds submit --pack image=gcr.io/vrcg-database/vrcg_pipeline:$GITHUB_SHA ./vrcg_pipeline
+#          gcloud run deploy vrcg_pipeline \
+#           --image gcr.io/vrcg-database/vrcg_pipeline:$GITHUB_SHA \
+#            --platform managed \
+#            --region us-central1 \
+#            --timeout 540 \
+#            --memory 1024Mi \
+#            --update-labels managed-by=github-actions,commit-sha=$GITHUB_SHA \
+#            --project vrcg-database
