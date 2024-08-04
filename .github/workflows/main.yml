@@ -74,14 +74,13 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
         with:
           version: 'latest'
-
-
           
       - name: Deploy
-        uses: google-github-actions/deploy-cloud-functions@v2
+        uses: google-github-actions/deploy-cloud-functions@v1
         with: 
           name: vrcg_pipeline
           runtime: python38
+          entry_point: main
           project_id: vrcg-database
           event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
           event_trigger_resource: projects/vrcg-database/topics/vrcg-pipeline-trigger
