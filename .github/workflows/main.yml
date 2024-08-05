@@ -26,10 +26,12 @@ jobs:
 
       - name: Build and Push Container
         run: |
-          echo "Current directory contents:"
-          ls -la
-          echo "vrcg_pipeline directory contents:"
+          echo "Current directory structure:"
+          tree -L 2
+          echo "Contents of vrcg_pipeline directory:"
           ls -la vrcg_pipeline
+          echo "Contents of Dockerfile:"
+          cat vrcg_pipeline/Dockerfile
           echo "Starting build..."
           gcloud builds submit vrcg_pipeline --tag us-docker.pkg.dev/vrcg-database/vrcg-pipeline/vrcg_pipeline:${{ github.sha }}
           echo "Build completed. Verifying image..."
