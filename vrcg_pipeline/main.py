@@ -125,6 +125,12 @@ def map_data(df):
         car_data_df['Price'] = pd.to_numeric(car_data_df['Price'], errors='coerce')
     if 'VDA' in car_data_df.columns:
         car_data_df['VDA'] = pd.to_numeric(car_data_df['VDA'], errors='coerce')
+    if 'Mileage' in car_data_df.columns:
+        car_data_df['Mileage'] = pd.to_numeric(car_data_df['Mileage'], errors='coerce')
+    if 'Year' in car_data_df.columns:
+        car_data_df['Year'] = pd.to_numeric(car_data_df['Year'], errors='coerce')
+    if 'Grade' in car_data_df.columns:
+        car_data_df['Grade'] = pd.to_numeric(car_data_df['Grade'], errors='coerce').astype('str')
 
     return car_data_df
 
