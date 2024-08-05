@@ -26,12 +26,16 @@ jobs:
 
       - name: Build and Push Container
         run: |
-          gcloud builds submit --tag gcr.io/vrcg-database/vrcg_pipeline:${{ github.sha }} .
+          echo "Starting build..."
+          gcloud builds submit --tag us-docker.pkg.dev/vrcg-database/vrcg-pipeline/vrcg_pipeline:${{ github.sha }} .
+          echo "Build completed. Verifying image..."
+          gcloud artifacts docker images list us-docker.pkg.dev/vrcg-database/vrcg-pipeline
 
       - name: Deploy to Cloud Run
         run: |
+          echo "Deploying image us-docker.pkg.dev/vrcg-database/vrcg-pipeline/vrcg_pipeline:${{ github.sha }}"
           gcloud run deploy vrcg_pipeline \
-            --image gcr.io/vrcg-database/vrcg_pipeline:${{ github.sha }} \
+            --image us-docker.pkg.dev/vrcg-database/vrcg-pipeline/vrcg_pipeline:${{ github.sha }} \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
