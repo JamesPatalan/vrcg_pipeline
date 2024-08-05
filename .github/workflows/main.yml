@@ -26,6 +26,8 @@ jobs:
 
       - name: Build and Push Container
         run: |
+          echo "Current directory contents:"
+          ls -la
           echo "Starting build..."
           gcloud builds submit ./vrcg_pipeline --tag us-docker.pkg.dev/vrcg-database/vrcg-pipeline/vrcg_pipeline:${{ github.sha }} .
           echo "Build completed. Verifying image..."
@@ -40,12 +42,3 @@ jobs:
             --region us-central1 \
             --allow-unauthenticated \
             --set-env-vars=UN=${{ secrets.UN }},PW=${{ secrets.PW }},IM=${{ secrets.IM }},SMTP=${{ secrets.SMTP }}
-
-#      - name: Deploy to Cloud Run
-#        uses: google-github-actions/deploy-cloudrun@v1
-#        with:
-#          service: vrcg_pipeline
-#          image: gcr.io/vrcg-database/vrcg_pipeline
-#          region: us-central1
-#          project_id: vrcg-database
-#          timeout: 540s
