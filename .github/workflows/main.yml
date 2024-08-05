@@ -36,7 +36,7 @@ jobs:
           runtime: python38
           entry_point: main
           project_id: vrcg-database
-          image: us-docker.pkg.dev/vrcg-database/vrcg-pipeline
+          image: gcr.io/vrcg-database/vrcg-pipeline
           event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
           event_trigger_resource: projects/vrcg-database/topics/vrcg-pipeline-trigger
           source_dir: ./vrcg_pipeline/
