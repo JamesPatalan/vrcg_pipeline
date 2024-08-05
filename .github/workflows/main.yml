@@ -29,25 +29,19 @@ jobs:
           gcloud builds submit --tag gcr.io/vrcg-database/vrcg_pipeline .
 
       - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v1
-        with:
-          service: vrcg_pipeline
-          image: gcr.io/vrcg-database/vrcg_pipeline
-          region: us-central1
-          project_id: vrcg-database
-          timeout: 540s
+        run: |
+          gcloud run deploy vrcg_pipeline \
+            --image gcr.io/vrcg-database/vrcg_pipeline \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --set-env-vars=UN=${{ secrets.UN }},PW=${{ secrets.PW }},IM=${{ secrets.IM }},SMTP=${{ secrets.SMTP }}
 
-          
-#      - name: Deploy
-#        uses: google-github-actions/deploy-cloud-functions@v1
-#        with: 
-#          name: vrcg_pipeline
-#          runtime: python38
-#          entry_point: main
+#      - name: Deploy to Cloud Run
+#        uses: google-github-actions/deploy-cloudrun@v1
+#        with:
+#          service: vrcg_pipeline
+#          image: gcr.io/vrcg-database/vrcg_pipeline
+#          region: us-central1
 #          project_id: vrcg-database
-#          image: gcr.io/vrcg-database/vrcg-pipeline
-#          event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
-#          event_trigger_resource: projects/vrcg-database/topics/vrcg-pipeline-trigger
-#          source_dir: ./vrcg_pipeline/
-#          timeout: 540
-#          memory_mb: 1024
+#          timeout: 540s
