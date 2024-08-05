@@ -26,12 +26,12 @@ jobs:
 
       - name: Build and Push Container
         run: |
-          gcloud builds submit --tag gcr.io/vrcg-database/vrcg_pipeline .
+          gcloud builds submit --tag gcr.io/vrcg-database/vrcg_pipeline:${{ github.sha }} .
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy vrcg_pipeline \
-            --image gcr.io/vrcg-database/vrcg_pipeline \
+            --image gcr.io/vrcg-database/vrcg_pipeline:${{ github.sha }} \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
