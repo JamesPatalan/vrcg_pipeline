@@ -27,7 +27,7 @@ jobs:
       - name: Build and Push Container
         run: |
           echo "Starting build..."
-          gcloud builds submit --tag us-docker.pkg.dev/vrcg-database/vrcg-pipeline/vrcg_pipeline:${{ github.sha }} .
+          gcloud builds submit ./vrcg_pipeline --tag us-docker.pkg.dev/vrcg-database/vrcg-pipeline/vrcg_pipeline:${{ github.sha }} .
           echo "Build completed. Verifying image..."
           gcloud artifacts docker images list us-docker.pkg.dev/vrcg-database/vrcg-pipeline
 
