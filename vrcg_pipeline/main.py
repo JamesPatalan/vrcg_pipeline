@@ -6,22 +6,21 @@ from email.header import decode_header
 from io import BytesIO
 import json
 import smtplib
-import config as cfg
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email import encoders
 from datetime import datetime
 import logging
-import google.cloud.logging
+# import google.cloud.logging
 from google.cloud import bigquery
 from google.cloud import storage
+import config as cfg
 
-'''# Set up logging
+# Set up logging
 logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO, datefmt='%I:%M:%S')
-logging_client = google.cloud.logging.Client()
-logging_client.setup_logging()
-'''
+# logging_client = google.cloud.logging.Client()
+# logging_client.setup_logging()
 
 # Define a mapping of common column names to variations
 column_mapping = {
@@ -94,6 +93,7 @@ region_mapping = {
     'Northwest': ['WA', 'OR'],
     'AlaskaHawaii': ['AK', 'HI']
 }
+
 
 def get_best_match(col_name, choices):
     match, score = process.extractOne(col_name, choices)
@@ -183,6 +183,10 @@ def fetch_data(email_ids, mail):
 
                                         # Add a 'Supplier' column with the domain of the sender
                                         df['Supplier'] = domain
+                                        
+                                        # Drop error causing columns
+                                        if 'Due Location Date' in df.columns:
+                                            df = df.drop('Due Location Date', axis='columns')
 
                                         # Map data
                                         mapped_df = map_data(df)
@@ -226,7 +230,7 @@ def map_state_from_location(row):
     if pd.isna(row['Location']):  # Handle NaN values
         return ''
 
-    if pd.isna(row['State']) or row['State'] is None or row['State'] is '':
+    if pd.isna(row['State']) or row['State'] == None or row['State'] == '':
         location_upper = row['Location'].upper()
         for state, cities in city_to_state_mapping.items():
             for city in cities:
@@ -306,11 +310,12 @@ def send_df_as_email(df, un, pw, to_email, body, smtp_server, smtp_port):
 
 
 def load_df_to_bq(df, project_id):
+    
     # Create a BigQuery client
     client = bigquery.Client(project=project_id)
 
     # Define the table name using today's date
-    table_id = cfg.table
+    table_id = 'inventory.vrcg_master'
 
     for column in df.select_dtypes(include=['object']).columns:
         df[column] = df[column].astype('string')
@@ -324,7 +329,7 @@ def load_df_to_bq(df, project_id):
     print(f"Loaded {job.output_rows} rows into {table_id}.")
 
 
-def vrcg_pipeline():
+def vrcg_pipeline(event, context):
     storage_client = storage.Client()
 
     bucket = storage_client.get_bucket(cfg.bucket)
@@ -341,6 +346,7 @@ def vrcg_pipeline():
     # FIX TO LOG INSTEAD OF PRINT #
     if email_ids:
         # Pipeline
+        # Change print to logging
         print('pipeline running...')
         all_data = fetch_data(email_ids, mail)
         all_data = map_makes(all_data)
@@ -350,7 +356,16 @@ def vrcg_pipeline():
         print('pipeline complete')
 
         # Email
-        print('emailing...')
+        # print('emailing...')
+        # send_df_as_email(
+        #     df = all_data,
+        #     un = un, pw = pw,
+        #     to_email = 'cgoodman@vrcg.com',
+        #     body = 'Please see the attached Excel file.',
+        #     smtp_server = smtp,
+        #     smtp_port=587
+        # )
+        
         send_df_as_email(
             df=all_data,
             un=un, pw=pw,
@@ -365,7 +380,7 @@ def vrcg_pipeline():
         print('pushing to bq')
         load_df_to_bq(
             all_data,
-            project_id='cfg.project'
+            project_id=cfg.project
         )
         print('done')
 
@@ -373,4 +388,5 @@ def vrcg_pipeline():
         print("No unread emails.")
 
 if __name__ == '__main__':
-    vrcg_pipeline()
+    logging.info(f'beginning run of vrcg pipeline for {datetime.now()}')
+    vrcg_pipeline("", "")
