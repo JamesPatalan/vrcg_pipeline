@@ -22,7 +22,7 @@ jobs:
         uses: google-github-actions/deploy-cloud-functions@v2
         with:
           name: vrcg_pipeline
-          runtime: python 39
+          runtime: python39
           project_id: vrcg-database
           event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
           event_trigger_resource: projects/vrcg-database/topics/vrcg_pipeline
