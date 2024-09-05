@@ -8,16 +8,15 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email import encoders
 import logging
-import google.cloud.logging
+# import google.cloud.logging
 from google.oauth2 import service_account
 from google.cloud import storage
 
 
-'''# Set up logging
+# Set up logging
 logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO, datefmt='%I:%M:%S')
-logging_client = google.cloud.logging.Client()
-logging_client.setup_logging()
-'''
+# logging_client = google.cloud.logging.Client()
+# logging_client.setup_logging()
 
 def archive_emails(un, pw, im):
     # Connect to the IMAP server
