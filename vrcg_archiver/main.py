@@ -42,7 +42,7 @@ def archive_emails(un, pw, im):
     mail.close()
     mail.logout()
 
-def main():
+def vrcg_archiver(event, context):
     storage_client = storage.Client()
 
     bucket = storage_client.get_bucket(cfg.bucket)
@@ -54,6 +54,9 @@ def main():
     im = keys['IM']
 
     archive_emails(un = un, pw = pw, im = im)
+    archive_emails(un = un, pw = pw, im = im)
+    archive_emails(un = un, pw = pw, im = im)
 
 if __name__ == '__main__':
-    main()
+    logging.info(f'beginning run of vrcg archiver for {datetime.now()}')
+    vrcg_archiver("", "")
