@@ -1,4 +1,4 @@
-name: vrcg_pipeline
+name: vrcg_archiver
 on:
   workflow_dispatch:
   push:
