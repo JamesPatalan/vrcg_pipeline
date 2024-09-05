@@ -1,0 +1,31 @@
+name: vrcg_pipeline
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+    - "vrcg_archiver**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.VRCG_SECRET }}
+
+      - name: Deploy
+        uses: google-github-actions/deploy-cloud-functions@v2
+        with:
+          name: vrcg_archiver
+          runtime: python39
+          project_id: vrcg-database
+          event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
+          event_trigger_resource: projects/vrcg-database/topics/vrcg_archiver
+          source_dir: ./vrcg_archiver/
+          timeout: 540
+          memory_mb: 1024
