@@ -1,6 +1,5 @@
 import json
 import email
-import imaplib
 import config as cfg
 from email.message import EmailMessage
 from email.mime.base import MIMEBase
@@ -9,7 +8,6 @@ from email.mime.application import MIMEApplication
 from email import encoders
 import logging
 # import google.cloud.logging
-from google.oauth2 import service_account
 from google.cloud import storage
 
 
