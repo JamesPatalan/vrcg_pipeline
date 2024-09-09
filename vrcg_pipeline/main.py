@@ -104,19 +104,17 @@ def map_data(df):
     # Initialize a dictionary to store the extracted data
     car_data_dict = {common_col: [] for common_col in column_mapping.keys()}
 
-    # Iterate through each row in the DataFrame
-    for index, row in df.iterrows():
-        for common_col, variants in column_mapping.items():
-            best_match = None
-            for variant in variants:
-                match = get_best_match(variant.lower(), df.columns)
-                if match:
-                    best_match = match
-                    break
-            if best_match:
-                car_data_dict[common_col].append(row[best_match])
-            else:
-                car_data_dict[common_col].append(None)  # Append None if no match is found
+    for common_col, variants in column_mapping.items():
+        best_match = None
+        for variant in variants:
+            match = get_best_match(variant.lower(), df.columns)
+            if match:
+                best_match = match
+                break
+        if best_match:
+            car_data_dict[common_col] = df[best_match]
+        else:
+            car_data_dict[common_col] = pd.Series([None] * len(df))  # Append None if no match is found
 
     car_data_df = pd.DataFrame(car_data_dict)
 
