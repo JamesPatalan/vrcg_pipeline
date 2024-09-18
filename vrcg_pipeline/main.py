@@ -353,16 +353,16 @@ def vrcg_pipeline(event, context):
         all_data['Inventory_Date'] = datetime.now().strftime("%Y_%m_%d")
         print('pipeline complete')
 
-        # Email
-        # print('emailing...')
-        # send_df_as_email(
-        #     df = all_data,
-        #     un = un, pw = pw,
-        #     to_email = 'cgoodman@vrcg.com',
-        #     body = 'Please see the attached Excel file.',
-        #     smtp_server = smtp,
-        #     smtp_port=587
-        # )
+        Email
+        print('emailing...')
+        send_df_as_email(
+            df = all_data,
+            un = un, pw = pw,
+            to_email = 'cgoodman@vrcg.com',
+            body = 'Please see the attached Excel file.',
+            smtp_server = smtp,
+            smtp_port=587
+        )
         
         send_df_as_email(
             df=all_data,
