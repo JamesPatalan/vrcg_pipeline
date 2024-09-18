@@ -353,7 +353,7 @@ def vrcg_pipeline(event, context):
         all_data['Inventory_Date'] = datetime.now().strftime("%Y_%m_%d")
         print('pipeline complete')
 
-        Email
+        # Email
         print('emailing...')
         send_df_as_email(
             df = all_data,
