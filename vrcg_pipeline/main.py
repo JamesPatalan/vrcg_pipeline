@@ -344,7 +344,7 @@ def vrcg_pipeline(event, context):
     # FIX TO LOG INSTEAD OF PRINT #
     if email_ids:
         # Pipeline
-        # Change print to logging
+        # Change print to logging 
         print('pipeline running...')
         all_data = fetch_data(email_ids, mail)
         all_data = map_makes(all_data)
