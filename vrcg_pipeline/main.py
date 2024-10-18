@@ -40,6 +40,9 @@ column_mapping = {
 }
 
 make_mapping = {
+    'Audi': ['AUDI', 'AUD'],
+    'Bmw': ['BMW'],
+    'Cadillac': ['CADI', 'Cadillac'],
     'Chevrolet': ['CHV', 'Chevrolet'],
     'Jeep': ['JEE', 'Jeep'],
     'Toyota': ['TOY', 'Toyota'],
@@ -47,10 +50,15 @@ make_mapping = {
     'Mercedes-Benz': ['MB', 'Mercedes-Benz'],
     'Chrysler': ['CHR', 'car model'],
     'Dodge': ['DOD', 'Dodge'],
+    'Honda': ['HOND', 'Honda'],
+    'Hyundai': ['HYUN', 'HYUNDAI'],
+    'Kia': ['KIA'],
+    'Gmc': ['GMC'],
     'Nissan': ['NIS', 'Nissan'],
     'Lincoln': ['LIN', 'Lincoln'],
     'Maserati': ['MAZ', 'Maserati'],
     'Mini': ['MIN', 'Mini', 'MINI Cooper'],
+    'RAM': ['RAM'],
     'Volvo': ['VOL', 'Volvo'],
     'Volkswagen': ['VW', 'Volkswagen']
 }
