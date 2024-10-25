@@ -109,6 +109,10 @@ def get_best_match(col_name, choices):
 
 
 def map_data(df):
+    # Drop enterprise age column
+    if 'age' in df.columns.str.lower():
+        df = df.drop(columns=[col for col in df.columns if col.lower() == 'age'])
+    
     # Initialize a dictionary to store the extracted data
     car_data_dict = {common_col: [] for common_col in column_mapping.keys()}
 
