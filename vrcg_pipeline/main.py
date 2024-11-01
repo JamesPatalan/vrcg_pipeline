@@ -58,6 +58,7 @@ make_mapping = {
     'Lincoln': ['LIN', 'Lincoln'],
     'Maserati': ['MAZ', 'Maserati'],
     'Mini': ['MIN', 'Mini', 'MINI Cooper'],
+    'Mitsubishi': ['mitsubishi', 'MITS'],
     'RAM': ['RAM'],
     'Volvo': ['VOL', 'Volvo'],
     'Volkswagen': ['VW', 'Volkswagen']
