@@ -15,6 +15,8 @@ import logging
 # import google.cloud.logging
 from google.cloud import bigquery
 from google.cloud import storage
+import numpy as np
+from functools import lru_cache
 import config as cfg
 
 # Set up logging
@@ -216,24 +218,22 @@ def fetch_data(email_ids, mail):
     return all_data
 
 
-def map_makes(df):
+def map_makes(df): # Vectorized version
     df['Make'] = df['Make'].astype(str)
-
-    # Invert make_mapping to create a lookup dictionary
-    lookup = {variant: make for make, variants in make_mapping.items() for variant in variants}
-
-    # Initialize a list to store the standardized makes
-    standardized_makes = []
-
-    # Iterate through each item in the 'make' column
-    for make in df['Make']:
-        # Find the best match for the current make
-        best_match = get_best_match(make, lookup.keys())
-        # Append the standardized make or the original if no match is found
-        standardized_makes.append(lookup[best_match] if best_match else make)
-
-    # Update the 'make' column with the standardized makes
-    df['Make'] = standardized_makes
+    
+    # Create lookup dictionary once
+    lookup = {variant.upper(): make 
+             for make, variants in make_mapping.items() 
+             for variant in variants}
+    
+    # Vectorized operation using map with cached function
+    @lru_cache(maxsize=1000)
+    def find_make(make):
+        make_upper = make.upper()
+        best_match = get_best_match(make_upper, lookup.keys())
+        return lookup.get(best_match, make) if best_match else make
+    
+    df['Make'] = df['Make'].map(find_make)
     return df
 
 
