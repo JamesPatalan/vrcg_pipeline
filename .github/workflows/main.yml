@@ -28,6 +28,6 @@ jobs:
           event_trigger_resource: projects/vrcg-database/topics/vrcg_pipeline
           source_dir: ./vrcg_pipeline/
           timeout: 540
-          memory_mb: 4096
+          memory_mb: 2048
 
      
