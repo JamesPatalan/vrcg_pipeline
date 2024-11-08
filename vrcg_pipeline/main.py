@@ -364,6 +364,9 @@ def vrcg_pipeline(event, context):
         all_data['State'] = all_data.apply(map_state_from_location, axis=1)
         all_data['Region'] = all_data['State'].apply(map_state_to_region)
         all_data['Inventory_Date'] = datetime.now().strftime("%Y_%m_%d")
+        # Remove Duplicates
+        all_data = all_data.sort_values(by='VIN')
+        all_data = all_data.drop_duplicates(subset='VIN', keep='first')
         print('pipeline complete')
 
         # Email
