@@ -381,6 +381,15 @@ def vrcg_pipeline(event, context):
         )
         
         send_df_as_email(
+            df = all_data,
+            un = un, pw = pw,
+            to_email = 'bhutto@vrcg.com',
+            body = 'Please see the attached Excel file.',
+            smtp_server = smtp,
+            smtp_port=587
+        )
+        
+        send_df_as_email(
             df=all_data,
             un=un, pw=pw,
             to_email='jamespatalan@gmail.com',
