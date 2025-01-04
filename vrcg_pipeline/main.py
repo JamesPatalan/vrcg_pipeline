@@ -105,6 +105,13 @@ region_mapping = {
     'AlaskaHawaii': ['AK', 'HI']
 }
 
+supplier_name_mapping = {
+    'em.com' : 'Enterprise',
+    'foxrentacar.com' : 'Fox',
+    'hertz.com' : 'Hertz',
+    'sixt.com' : 'Sixt'
+}
+
 
 def get_best_match(col_name, choices):
     match, score = process.extractOne(col_name, choices)
@@ -194,8 +201,9 @@ def fetch_data(email_ids, mail):
                                         file_stream = BytesIO(file_data)
                                         df = pd.read_excel(file_stream)
 
-                                        # Add a 'Supplier' column with the domain of the sender
-                                        df['Supplier'] = domain
+                                        # Add a 'Supplier' column with the cleaned domain of the sender
+                                        supplier_name = supplier_name_mapping.get(domain, domain) # Will default to domain if not found in the map
+                                        df['Supplier'] = supplier_name
                                         
                                         # Drop error causing columns
                                         if 'Due Location Date' in df.columns:
@@ -211,7 +219,8 @@ def fetch_data(email_ids, mail):
                                     elif filename.endswith(".xlsb"):
                                         file_stream = BytesIO(file_data)
                                         df = pd.read_excel(file_stream, engine='pyxlsb')
-                                        df['Supplier'] = domain
+                                        supplier_name = supplier_name_mapping.get(domain, domain)
+                                        df['Supplier'] = supplier_name
                                         mapped_df = map_data(df)
                                         all_data = pd.concat([all_data, mapped_df], ignore_index=True)
 
