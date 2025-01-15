@@ -9,6 +9,8 @@ import smtplib
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
+from email.mime.text import MIMEText # New
+from email.mime.image import MIMEImage # New
 from email import encoders
 from datetime import datetime
 import logging
@@ -294,7 +296,7 @@ def check_unread_emails(un, pw, im):
         return None, None
 
 
-def send_df_as_email(df, un, pw, to_email, body, smtp_server, smtp_port):
+def send_df_as_email(df, un, pw, logo_data, to_email, smtp_server, smtp_port):
     from_email = un
     password = pw
 
@@ -306,20 +308,41 @@ def send_df_as_email(df, un, pw, to_email, body, smtp_server, smtp_port):
     output.seek(0)
 
     # Create the email
-    msg = MIMEMultipart()
+    msg = MIMEMultipart('related')
     msg['Subject'] = f'VRCG Master List {today_date}'
     msg['From'] = from_email
     msg['To'] = to_email
 
-    # Attach the body with the msg instance
-    msg.attach(MIMEBase('application', 'octet-stream'))
-    msg.attach(MIMEApplication(body.encode('utf-8'), Name='body.txt'))
+    # Create HTML body with logo
+    html_body = f"""
+    <html>
+        <body>
+            <p>Please see the attached Excel file.</p>
+            <p><em>This is an automated email. Please do not respond to this message.</em></p>
+            <br>
+            <img src="cid:logo" width="200">
+        </body>
+    </html>
+    """
+
+    msg_alternative = MIMEMultipart('alternative')
+    msg.attach(msg_alternative)
+    
+    # Attach HTML body
+    msg_html = MIMEText(html_body, 'html')
+    msg_alternative.attach(msg_html)
+    
+    # Attach logo as inline image
+    img = MIMEImage(logo_data)
+    img.add_header('Content-ID', '<logo>')
+    img.add_header('Content-Disposition', 'inline')
+    msg.attach(img)
 
     # Convert the DataFrame to an Excel file and attach it to the email
     part = MIMEBase('application', 'octet-stream')
     part.set_payload(output.read())
     encoders.encode_base64(part)
-    part.add_header('Content-Disposition', 'attachment; filename="dataframe.xlsx"')
+    part.add_header('Content-Disposition', 'attachment; filename="VRCG_Inventory.xlsx"')
     msg.attach(part)
 
     # Send the email
@@ -354,6 +377,8 @@ def vrcg_pipeline(event, context):
 
     bucket = storage_client.get_bucket(cfg.bucket)
     blob = bucket.blob(cfg.blob)
+    logo_blob = bucket.blob('logo.jpg')
+    logo_data = logo_blob.download_as_bytes()
 
     keys = json.loads(blob.download_as_string())
     un = keys['UN']
@@ -382,27 +407,24 @@ def vrcg_pipeline(event, context):
         print('emailing...')
         send_df_as_email(
             df = all_data,
-            un = un, pw = pw,
+            un = un, pw = pw, logo_data=logo_data,
             to_email = 'cgoodman@vrcg.com',
-            body = 'Please see the attached Excel file.',
             smtp_server = smtp,
             smtp_port=587
         )
         
         send_df_as_email(
             df = all_data,
-            un = un, pw = pw,
+            un = un, pw = pw, logo_data=logo_data,
             to_email = 'bhutto@vrcg.com',
-            body = 'Please see the attached Excel file.',
             smtp_server = smtp,
             smtp_port=587
         )
         
         send_df_as_email(
             df=all_data,
-            un=un, pw=pw,
+            un=un, pw=pw, logo_data=logo_data,
             to_email='jamespatalan@gmail.com',
-            body='Please see the attached Excel file.',
             smtp_server=smtp,
             smtp_port=587
         )
