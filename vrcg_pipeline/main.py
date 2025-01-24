@@ -111,7 +111,8 @@ supplier_name_mapping = {
     'em.com' : 'Enterprise',
     'foxrentacar.com' : 'Fox',
     'hertz.com' : 'Hertz',
-    'sixt.com' : 'Sixt'
+    'sixt.com' : 'Sixt',
+    'tulsacoxmail.com' : 'Avis (On Rent)'
 }
 
 
