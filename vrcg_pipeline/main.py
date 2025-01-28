@@ -30,7 +30,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=loggin
 column_mapping = {
     'Supplier': ['Supplier'],
     'State': ['state', 'st'],
-    'Location': ['location', 'location name'],
+    'Location': ['location', 'location name', 'city'],
     'Year': ['year', 'yr'],
     'Make': ['make', 'manufacturer', 'mfg'],
     'Model': ['model', 'car model'],
@@ -70,6 +70,7 @@ make_mapping = {
 
 city_to_state_mapping = {
     'AL': ['BIRMINGHAM'],
+    'AR': ['LITTLE ROCK'],
     'GA': ['ATLANTA'],
     'CA': ['SOUTHERN CA', 'RIVERSIDE', 'GOLDEN GATE', 'VAN NUYS', 'SAN FRANCISCO', 'LOS ANGELES'],
     'TX': ['DALLAS', 'HOUSTON', 'SAN ANTONIO', 'TEXAS HOBBYS', 'AUSTIN'],
