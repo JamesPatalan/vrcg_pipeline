@@ -407,21 +407,21 @@ def vrcg_pipeline(event, context):
 
         # Email
         print('emailing...')
-        send_df_as_email(
-            df = all_data,
-            un = un, pw = pw, logo_data=logo_data,
-            to_email = 'cgoodman@vrcg.com',
-            smtp_server = smtp,
-            smtp_port=587
-        )
+        # send_df_as_email(
+        #     df = all_data,
+        #     un = un, pw = pw, logo_data=logo_data,
+        #     to_email = 'cgoodman@vrcg.com',
+        #     smtp_server = smtp,
+        #     smtp_port=587
+        # )
         
-        send_df_as_email(
-            df = all_data,
-            un = un, pw = pw, logo_data=logo_data,
-            to_email = 'bhutto@vrcg.com',
-            smtp_server = smtp,
-            smtp_port=587
-        )
+        # send_df_as_email(
+        #     df = all_data,
+        #     un = un, pw = pw, logo_data=logo_data,
+        #     to_email = 'bhutto@vrcg.com',
+        #     smtp_server = smtp,
+        #     smtp_port=587
+        # )
         
         send_df_as_email(
             df=all_data,
@@ -446,3 +446,4 @@ def vrcg_pipeline(event, context):
 if __name__ == '__main__':
     logging.info(f'beginning run of vrcg pipeline for {datetime.now()}')
     vrcg_pipeline("", "")
+
