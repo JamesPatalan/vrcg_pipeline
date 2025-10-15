@@ -255,7 +255,7 @@ def map_state_from_location(row):
         return ''
 
     if pd.isna(row['State']) or row['State'] == None or row['State'] == '':
-        location_upper = row['Location'].upper()
+        location_upper = str(row['Location']).upper()
         for state, cities in city_to_state_mapping.items():
             for city in cities:
                 if city in location_upper:
@@ -448,6 +448,7 @@ def vrcg_pipeline(event, context):
 if __name__ == '__main__':
     logging.info(f'beginning run of vrcg pipeline for {datetime.now()}')
     vrcg_pipeline("", "")
+
 
 
 
