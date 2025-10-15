@@ -399,9 +399,9 @@ def vrcg_pipeline(event, context):
         all_data = map_makes(all_data)
         all_data['State'] = all_data.apply(map_state_from_location, axis=1)
         all_data['Region'] = all_data['State'].apply(map_state_to_region)
-        # all_data['Inventory_Date'] = datetime.now().strftime("%Y_%m_%d")
-        test = datetime(2025,10,14)
-        all_data['Inventory_Date'] = test.strftime("%Y_%m_%d")
+        all_data['Inventory_Date'] = datetime.now().strftime("%Y_%m_%d")
+        # test = datetime(2025,10,14)
+        # all_data['Inventory_Date'] = test.strftime("%Y_%m_%d")
         # Remove Duplicates
         all_data = all_data.sort_values(by='VIN')
         all_data = all_data.drop_duplicates(subset='VIN', keep='first')
@@ -409,21 +409,21 @@ def vrcg_pipeline(event, context):
 
         # Email
         print('emailing...')
-        # send_df_as_email(
-        #     df = all_data,
-        #     un = un, pw = pw, logo_data=logo_data,
-        #     to_email = 'cgoodman@vrcg.com',
-        #     smtp_server = smtp,
-        #     smtp_port=587
-        # )
+        send_df_as_email(
+            df = all_data,
+            un = un, pw = pw, logo_data=logo_data,
+            to_email = 'cgoodman@vrcg.com',
+            smtp_server = smtp,
+            smtp_port=587
+        )
         
-        # send_df_as_email(
-        #     df = all_data,
-        #     un = un, pw = pw, logo_data=logo_data,
-        #     to_email = 'bhutto@vrcg.com',
-        #     smtp_server = smtp,
-        #     smtp_port=587
-        # )
+        send_df_as_email(
+            df = all_data,
+            un = un, pw = pw, logo_data=logo_data,
+            to_email = 'bhutto@vrcg.com',
+            smtp_server = smtp,
+            smtp_port=587
+        )
         
         send_df_as_email(
             df=all_data,
@@ -448,5 +448,6 @@ def vrcg_pipeline(event, context):
 if __name__ == '__main__':
     logging.info(f'beginning run of vrcg pipeline for {datetime.now()}')
     vrcg_pipeline("", "")
+
 
 
