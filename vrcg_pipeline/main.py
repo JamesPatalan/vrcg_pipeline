@@ -60,7 +60,8 @@ make_mapping = {
     'Gmc': ['GMC'],
     'Nissan': ['NIS', 'Nissan'],
     'Lincoln': ['LIN', 'Lincoln'],
-    'Maserati': ['MAZ', 'Maserati'],
+    'Maserati': ['Maserati'],
+    'Mazda': ['MAZ', 'Mazda'],
     'Mini': ['MIN', 'Mini', 'MINI Cooper'],
     'Mitsubishi': ['mitsubishi', 'MITS'],
     'RAM': ['RAM'],
@@ -448,6 +449,7 @@ def vrcg_pipeline(event, context):
 if __name__ == '__main__':
     logging.info(f'beginning run of vrcg pipeline for {datetime.now()}')
     vrcg_pipeline("", "")
+
 
 
 
