@@ -426,14 +426,14 @@ def vrcg_pipeline(event, context):
             smtp_port=587
         )
         
-        send_df_as_email(
-            df=all_data,
-            un=un, pw=pw, logo_data=logo_data,
-            to_email='jamespatalan@gmail.com',
-            smtp_server=smtp,
-            smtp_port=587
-        )
-        print('sent')
+        # send_df_as_email(
+        #     df=all_data,
+        #     un=un, pw=pw, logo_data=logo_data,
+        #     to_email='jamespatalan@gmail.com',
+        #     smtp_server=smtp,
+        #     smtp_port=587
+        # )
+        # print('sent')
 
         # Push to BQ
         print('pushing to bq')
